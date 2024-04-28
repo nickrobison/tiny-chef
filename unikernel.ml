@@ -1,13 +1,9 @@
-open Lwt.Infix
 
-module Hello(Time: Mirage_time.S) = struct
-  let start _time = 
-    let rec loop = function
-    | 0 -> Lwt.return_true
-    | n -> 
-      Logs.info (fun f -> f "Hello chef");
-      Time.sleep_ns (Duration.of_sec 1) >>= fun () -> loop (n - 1)
-    in
-    loop 4
+module Hello(Time: Mirage_time.S)(C: Cohttp_lwt.S.Client) = struct
+
+  module Client = Client.Make(Time)(C)
+
+  let start time ctx = 
+    Client.start time ctx (Uri.of_string "https://google.com")
   
 end

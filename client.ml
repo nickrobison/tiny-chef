@@ -21,8 +21,8 @@ module Make(Time: Mirage_time.S)(C: Cohttp_lwt.S.Client) = struct
         repeat ctx uri timeout
     
   
-  let start _time (ctx: C.ctx) (uri: Uri.t) =
-    repeat ctx uri (Duration.of_sec 1)
+  let start _time (ctx: C.ctx) (uri: Uri.t) interval =
+    repeat ctx uri interval
 
 
 end

@@ -1,4 +1,4 @@
-open Lwt.Infix
+open Lwt.Syntax
 
 module Make(Time: Mirage_time.S)(C: Cohttp_lwt.S.Client) = struct
 
@@ -7,17 +7,17 @@ module Make(Time: Mirage_time.S)(C: Cohttp_lwt.S.Client) = struct
   module Log = (val Logs.src_log src: Logs.LOG)
 
   let request ctx uri =
-    C.get ~ctx uri >>= fun (_resp, body) ->
-      body |> Cohttp_lwt.Body.to_string >|= fun body ->
+    let* _resp, body = C.get ~ctx uri in
+    let+ body = body |> Cohttp_lwt.Body.to_string in
         Log.info (fun f -> f "Requested");
         body
 
 
 
   let rec repeat (ctx: C.ctx) (uri: Uri.t) (timeout: Duration.t) = 
-    request ctx uri >>= fun b -> 
+    let* b = request ctx uri in
+    let* _ = Time.sleep_ns timeout in
       Log.info (fun f -> f "Done %s" b);
-      Time.sleep_ns timeout >>= fun () ->
         repeat ctx uri timeout
     
   

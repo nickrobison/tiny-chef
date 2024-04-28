@@ -22,7 +22,7 @@ Arg.(value & opt int 8080 doc)
 
 
 
-module Hello(Time: Mirage_time.S)(CON: Conduit_mirage.S)(M: Mirage_clock.MCLOCK)(C: Cohttp_lwt.S.Client) = struct
+module TinyChef(Time: Mirage_time.S)(CON: Conduit_mirage.S)(M: Mirage_clock.MCLOCK)(C: Cohttp_lwt.S.Client) = struct
 
   module Client = Client.Make(Time)(C)(M)
   module Server = Server.Make(CON)

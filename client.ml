@@ -29,7 +29,7 @@ module Make(Time: Mirage_time.S)(C: Cohttp_lwt.S.Client)(M: Mirage_clock.MCLOCK)
         repeat ctx uri timeout
     
   
-  let start (ctx: C.ctx) (uri: Uri.t) interval =
+  let start ctx uri interval =
     Log.info (fun f -> f "Starting requests to %a every %a seconds" Uri.pp uri Duration.pp interval );
     repeat ctx uri interval
 

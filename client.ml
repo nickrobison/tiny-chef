@@ -16,21 +16,21 @@ module Make(Time: Mirage_time.S)(C: Cohttp_lwt.S.Client)(M: Mirage_clock.MCLOCK)
     let+ body = body |> Cohttp_lwt.Body.to_string in
     match Code.is_success response_code with
     | false -> 
-      Log.err (fun f -> f "Received response: %d after %d ms" response_code (Duration.to_ms duration));
+      Log.err (fun f -> f "Received response: %d from %a after %d ms" response_code Uri.pp_hum uri (Duration.to_ms duration));
       body
       | true -> 
-          Log.info (fun f -> f "Received response: %d after %d ms" response_code (Duration.to_ms duration));
+          Log.info (fun f -> f "Received response: %d from %a after %d ms" response_code Uri.pp_hum uri (Duration.to_ms duration));
           body
 
 
   let rec repeat ctx uri timeout = 
     let* _ = request ctx uri in
     let* _ = Time.sleep_ns timeout in
-      Log.info (fun f -> f "Done");
         repeat ctx uri timeout
     
   
   let start (ctx: C.ctx) (uri: Uri.t) interval =
+    Log.info (fun f -> f "Starting requests to %a every %a seconds" Uri.pp uri Duration.pp interval );
     repeat ctx uri interval
 
 

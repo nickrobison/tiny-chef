@@ -7,3 +7,5 @@ mirage/
 _build/
 dune*
 Makefile
+.direnv/
+result

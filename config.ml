@@ -23,4 +23,4 @@ let () =
       $ cohttp_client res_dns conduit;
     ]
   in
-  register "hello" job
+  register "tiny-chef" job
